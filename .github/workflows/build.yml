@@ -44,6 +44,19 @@ jobs:
       working-directory: Proyecto-Linces
       run: npm run build
 
-    - name: Run tests
+    - name: Install PHPUnit globally
+      run: composer global require phpunit/phpunit
+
+    - name: Verify global PHPUnit installation
+      run: ~/.composer/vendor/bin/phpunit --version
+
+    - name: Verify local PHPUnit file
+      run: cat Proyecto-Linces/vendor/bin/phpunit
+
+    - name: Run tests with global PHPUnit
+      working-directory: Proyecto-Linces
+      run: ~/.composer/vendor/bin/phpunit
+
+    - name: Run tests with local PHPUnit
       working-directory: Proyecto-Linces
       run: ./vendor/bin/phpunit
