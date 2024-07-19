@@ -1,4 +1,5 @@
 name: Proyecto Linces Build Laravel 
+
 on:
   push:
     branches:
@@ -19,9 +20,8 @@ jobs:
         extensions: mbstring, intl, pdo, sqlite
 
     - name: Install Composer dependencies
+      run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
       working-directory: Proyecto-Linces
-      run: |
-        composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -29,13 +29,13 @@ jobs:
         node-version: '14'
 
     - name: Install Node.js dependencies
-      working-directory: Proyecto-Linces
       run: npm install
+      working-directory: Proyecto-Linces
 
     - name: Build assets
-      working-directory: Proyecto-Linces
       run: npm run build
+      working-directory: Proyecto-Linces
 
     - name: Run tests
+      run: ./vendor/bin/phpunit
       working-directory: Proyecto-Linces
-      run: vendor/bin/phpunit
