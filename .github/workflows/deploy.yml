@@ -1,4 +1,4 @@
-name: Deploy Laravel Application
+name: Proyecto Linces Build Laravel 
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,6 @@ jobs:
         extensions: mbstring, intl, pdo, sqlite
 
     - name: Install Composer dependencies
-      working-directory: Proyecto-Linces
       run: |
         composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
 
@@ -30,29 +29,10 @@ jobs:
         node-version: '14'
 
     - name: Install Node.js dependencies
-      working-directory: Proyecto-Linces
       run: npm install
 
     - name: Build assets
-      working-directory: Proyecto-Linces
       run: npm run build
 
-    - name: Deploy to server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_HOST: ${{ secrets.SERVER_HOST }}
-        SERVER_USER: ${{ secrets.SERVER_USER }}
-        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
-        rsync -avr --exclude='.git' --exclude='node_modules' --exclude='vendor' Proyecto-Linces/ $SERVER_USER@$SERVER_HOST:$DEPLOY_PATH
-        ssh $SERVER_USER@$SERVER_HOST "
-          cd $DEPLOY_PATH
-          composer install --no-dev --optimize-autoloader
-          php artisan migrate --force
-          npm install
-          npm run build
-        "
+    - name: Run tests
+      run: php artisan test
