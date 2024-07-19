@@ -1,5 +1,4 @@
 name: Proyecto Linces Build Laravel 
-
 on:
   push:
     branches:
@@ -39,4 +38,4 @@ jobs:
 
     - name: Run tests
       working-directory: Proyecto-Linces
-      run: php artisan test
+      run: vendor/bin/phpunit
