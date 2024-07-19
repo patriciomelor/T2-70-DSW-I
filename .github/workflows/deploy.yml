@@ -1,4 +1,4 @@
-name: Proyecto Linces
+name: Deploy Laravel Application
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2' # Cambiado a la versión de PHP 8.2
+        php-version: '8.2'
         extensions: mbstring, intl, pdo, sqlite
 
     - name: Install Composer dependencies
@@ -27,7 +27,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14' # Cambia esto a la versión de Node.js que necesites
+        node-version: '14'
 
     - name: Install Node.js dependencies
       working-directory: Proyecto-Linces
@@ -35,12 +35,12 @@ jobs:
 
     - name: Build assets
       working-directory: Proyecto-Linces
-      run: npm run production
+      run: npm run build
 
     - name: Deploy to server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_HOST: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
         SERVER_USER: ${{ secrets.SERVER_USER }}
         DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
       run: |
@@ -54,5 +54,5 @@ jobs:
           composer install --no-dev --optimize-autoloader
           php artisan migrate --force
           npm install
-          npm run production
+          npm run build
         "
