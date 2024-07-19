@@ -7,10 +7,10 @@ Este es un proyecto en PHP, FrameWork Laravel, conexion a bd MySQL
 ## Lenguajes
 
 
-[![PHP ](https://img.shields.io/badge/php-8.1-blue?style=for-the-badge&logo=php&logoColor=blue&logoSize=auto
+[![PHP ](https://img.shields.io/badge/php-7.3-blue?style=for-the-badge&logo=php&logoColor=blue&logoSize=auto
 )](https://www.php.net/manual/es/index.php) 
 
-[![Laravel](https://img.shields.io/badge/Laravel-8.3-red?style=for-the-badge&logo=laravel&logoColor=red&logoSize=auto
+[![Laravel](https://img.shields.io/badge/Laravel-11-red?style=for-the-badge&logo=laravel&logoColor=red&logoSize=auto
 )](https://laravel.com/docs/8.x/releases)
 
 ## Autores
@@ -62,8 +62,8 @@ Este Repositorio esta creado para evaluaciones de:
 
 3. **Clonar el repositorio**:
     ```bash
-    git clone https://github.com/tu_usuario/tu_proyecto.git
-    cd tu_proyecto
+    git clone https://github.com/patriciomelor/T2-70-DSW-I.git
+    cd Proyecto-Linces
     ```
 
 4. **Instalar dependencias de Composer**:
