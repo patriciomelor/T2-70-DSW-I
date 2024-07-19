@@ -13,6 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Change to project directory
+      run: cd Proyecto-Linces
+
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -20,7 +23,9 @@ jobs:
         extensions: mbstring, intl, pdo, sqlite
 
     - name: Install Composer dependencies
-      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-dev
+      working-directory: Proyecto-Linces
+      run: |
+        composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -28,9 +33,11 @@ jobs:
         node-version: '14' # Cambia esto a la versión de Node.js que necesites
 
     - name: Install Node.js dependencies
+      working-directory: Proyecto-Linces
       run: npm install
 
     - name: Build assets
+      working-directory: Proyecto-Linces
       run: npm run production
 
     - name: Deploy to server
@@ -44,11 +51,6 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
-        rsync -avr --exclude='.git' --exclude='node_modules' --exclude='vendor' . $SERVER_USER@$SERVER_HOST:$DEPLOY_PATH
+        rsync -avr --exclude='.git' --exclude='node_modules' --exclude='vendor' Proyecto-Linces/ $SERVER_USER@$SERVER_HOST:$DEPLOY_PATH
         ssh $SERVER_USER@$SERVER_HOST "
-          cd $DEPLOY_PATH
-          composer install --no-dev --optimize-autoloader
-          php artisan migrate --force
-          npm install
-          npm run production
-        "
+          cd $
