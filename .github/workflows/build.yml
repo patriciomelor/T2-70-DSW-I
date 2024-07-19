@@ -59,4 +59,5 @@ jobs:
 
     - name: Run tests with local PHPUnit
       working-directory: Proyecto-Linces
-      run: ./vendor/bin/phpunit
+      run: ~/.vendor/bin/phpunit
+
