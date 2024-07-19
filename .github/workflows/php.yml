@@ -1,4 +1,4 @@
-name: PHP Composer -  Proyecto Linces
+name: PHP Composer - Linces
 
 on:
   push:
