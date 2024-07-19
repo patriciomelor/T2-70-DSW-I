@@ -1,4 +1,4 @@
-name: Proyecto Linces Build Laravel 
+name: Build Laravel Application
 
 on:
   push:
@@ -23,9 +23,13 @@ jobs:
       working-directory: Proyecto-Linces
       run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
 
-    - name: Verify Composer installation
+    - name: Verify project directory
+      run: ls -la
       working-directory: Proyecto-Linces
+
+    - name: Verify vendor/bin directory
       run: ls -la vendor/bin
+      working-directory: Proyecto-Linces
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -42,4 +46,4 @@ jobs:
 
     - name: Run tests
       working-directory: Proyecto-Linces
-      run: vendor/bin/phpunit
+      run: ./vendor/bin/phpunit
