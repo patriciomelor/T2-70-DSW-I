@@ -13,13 +13,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Change to project directory
-      run: cd Proyecto-Linces
-
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0' # Cambia esto a la versión de PHP que necesites
+        php-version: '8.2' # Cambiado a la versión de PHP 8.2
         extensions: mbstring, intl, pdo, sqlite
 
     - name: Install Composer dependencies
@@ -44,7 +41,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         SERVER_HOST: ${{ secrets.SERVER_HOST }}
-        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_USER: ${{ secrets.SEVER_USER }}
         DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
       run: |
         mkdir -p ~/.ssh
@@ -53,4 +50,9 @@ jobs:
         ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
         rsync -avr --exclude='.git' --exclude='node_modules' --exclude='vendor' Proyecto-Linces/ $SERVER_USER@$SERVER_HOST:$DEPLOY_PATH
         ssh $SERVER_USER@$SERVER_HOST "
-          cd $
+          cd $DEPLOY_PATH
+          composer install --no-dev --optimize-autoloader
+          php artisan migrate --force
+          npm install
+          npm run production
+        "
