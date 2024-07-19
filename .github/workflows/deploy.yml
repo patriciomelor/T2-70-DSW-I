@@ -19,6 +19,9 @@ jobs:
         php-version: '8.2'
         extensions: mbstring, intl, pdo, sqlite
 
+    - name: Change to project directory
+      run: cd Proyecto-Linces
+
     - name: Install Composer dependencies
       run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
       working-directory: Proyecto-Linces
@@ -37,5 +40,5 @@ jobs:
       working-directory: Proyecto-Linces
 
     - name: Run tests
-      run: ./vendor/bin/phpunit
+      run: vendor/bin/phpunit
       working-directory: Proyecto-Linces
