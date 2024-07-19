@@ -1,4 +1,4 @@
-name: Deploy Laravel Application
+name: Proyecto Linces
 
 on:
   push:
@@ -40,8 +40,8 @@ jobs:
     - name: Deploy to server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_HOST: ${{ secrets.SERVER_HOST }}
-        SERVER_USER: ${{ secrets.SEVER_USER }}
+        SERVER_HOST: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
         DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
       run: |
         mkdir -p ~/.ssh
