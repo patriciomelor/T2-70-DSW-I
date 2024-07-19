@@ -20,14 +20,12 @@ jobs:
         extensions: mbstring, intl, pdo, sqlite
 
     - name: Install Composer dependencies
-      run: |
-        cd Proyecto-Linces
-        composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
+      run: composer install --no-progress --prefer-dist --optimize-autoloader --no-dev
+      working-directory: Proyecto-Linces
 
     - name: Verify Composer installation
-      run: |
-        cd Proyecto-Linces
-        ls -la vendor/bin
+      run: ls -la vendor/bin
+      working-directory: Proyecto-Linces
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -35,16 +33,13 @@ jobs:
         node-version: '14'
 
     - name: Install Node.js dependencies
-      run: |
-        cd Proyecto-Linces
-        npm install
+      run: npm install
+      working-directory: Proyecto-Linces
 
     - name: Build assets
-      run: |
-        cd Proyecto-Linces
-        npm run build
+      run: npm run build
+      working-directory: Proyecto-Linces
 
     - name: Run tests
-      run: |
-        cd Proyecto-Linces
-        ./Proyecto-Linces/vendor/bin/phpunit
+      run: ./vendor/bin/phpunit
+      working-directory: Proyecto-Linces
