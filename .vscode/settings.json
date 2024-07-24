@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "PHPLaravel",
+            "database": "${workspaceFolder:T2-70-DSW-I}/Proyecto-Linces/database/database.sqlite"
+        }
+    ]
+}
