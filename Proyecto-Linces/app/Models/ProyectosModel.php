@@ -17,24 +17,11 @@ class ProyectosModel extends Model
     private $responsable;
     private $monto;
 
-    // MÉTODO CONSTRUCTOR PARA GENERAR LA INSTANCIA
-    // public function __construct()
-    // {
-    //     //Setear algunos datos del constructor  
-    // }
-
-    // public function __construct(){
-    //     $this->server =$_SERVER['HTTP_HOST'];
-    //     $this->connection = null;
-    //     $this->port = 3306;
-    //     $this->db = 'Back_Practice';
-    //     $this->host = "localhost";
-
-    //     if ($this->server == 'localhost') {   
-    //         $this->username = 'caro';
-    //         $this->password = 'c4r0';
-    //     }
-    // }
+    //MÉTODO CONSTRUCTOR PARA GENERAR LA INSTANCIA
+    public function __construct()
+    {
+        //Seteamos datos del constructor  
+    }    
 
     //MUTADORES (Permiten generar cambios)
     public function setId($_nuevo){

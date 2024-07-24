@@ -1,3 +1,3 @@
 <div>
-    <h1>Hola hola hola</h1>
+    <h1>Vista al usuario</h1>
 </div>
