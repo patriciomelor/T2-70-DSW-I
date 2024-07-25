@@ -20,7 +20,7 @@ class ProyectosController extends Controller
         
         //Se da la respuesta true o null para rs
         //Se cierra la conexión    
-        if ($rs_p) {
+        if ($rs) {
             return true;
         }
         return null; 
@@ -33,12 +33,12 @@ class ProyectosController extends Controller
     }
 
     // GET ALL - 2. Controlador para obtener los proyectos.
-    public function getAll()
+    public function getAll($_id)
     {
         //Llamamos a la conexión, instanciamos el objeto.
         //Hacemos la query
         //Hacemos el $rs para almacenar los objetos en una cola y que se recorra en el if
-        if ($rs) {
+        if ($_id ==NULL ) {
             //Mientras haya objetos en rs se almacenarán en un arreglo
         }
         //Cerramos la conexión
@@ -54,16 +54,16 @@ class ProyectosController extends Controller
         //Hacemos el $rs null 
         try{
             //comprombamos que el id ingresado existe en el registro de la bd
-        }catch (){
+        }catch (\Throwable $th){
             //$rs sigue siendo null
         }
         //Cerramos la conexión
         //Retornamos la respuesta
     }
 
-    // UPDATE - 3. Controlador para actualizar un proyecto por id.
+    // PUT - 3. Controlador para actualizar un proyecto por id.
     //Asumiendo que ya se comprobó previamente que el id si existe en el registro, se corre la función.
-    public function update($_nuevo){ //El objeto que ingresa debe incluir los datos a modificar y el id que corresponde.
+    public function put($_nuevo,$_id){ //El objeto que ingresa debe incluir los datos a modificar y el id que corresponde.
         if($_id == NULL){
             //se informa que no se ingresó el valor del id
         }else{            
@@ -94,3 +94,5 @@ class ProyectosController extends Controller
 
 
 }
+
+
