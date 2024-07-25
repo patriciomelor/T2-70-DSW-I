@@ -20,46 +20,57 @@ class ProyectosModel extends Model
     public function __construct()
     {
         //Seteamos datos del constructor  
-    }    
+    }
 
     //MUTADORES (Permiten generar cambios)
-    public function setId($_nuevo){
+    public function setId($_nuevo)
+    {
         $this->id = $_nuevo;
     }
-    public function setNombre($_nuevo){
+    public function setNombre($_nuevo)
+    {
         $this->nombre = $_nuevo;
     }
-    public function setFecha_inicio($_nuevo){
+    public function setFecha_inicio($_nuevo)
+    {
         $this->fecha_inicio = $_nuevo;
     }
-    public function setEstado($_nuevo){
+    public function setEstado($_nuevo)
+    {
         $this->estado = $_nuevo;
     }
-    public function setResponsable($_nuevo){
+    public function setResponsable($_nuevo)
+    {
         $this->responsable = $_nuevo;
     }
-    public function setMonto($_nuevo){
+    public function setMonto($_nuevo)
+    {
         $this->monto = $_nuevo;
     }
 
     //ACCESADORES (Permiten obtener el valor)
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
-    public function getNombre(){
+    public function getNombre()
+    {
         return $this->nombre;
     }
-    public function getFecha_inicio(){
+    public function getFecha_inicio()
+    {
         return $this->fecha_inicio;
     }
-    public function getEstado(){
+    public function getEstado()
+    {
         return $this->estado;
     }
-    public function getResponsable(){
+    public function getResponsable()
+    {
         return $this->responsable;
     }
-    public function getMonto(){
+    public function getMonto()
+    {
         return $this->monto;
     }
-    
 }

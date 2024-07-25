@@ -6,28 +6,31 @@ use Illuminate\Http\Request;
 
 class ProyectosController extends Controller
 {
-    //
-    public function get($_id){
-      if($_id == NULL){
-    //RETORNO TODO
+    //1. Controlador para crear un proyecto.
+    public function new($_nuevo)
+    {
+        //Crear el objeto nuevo
+    }
+    
+    //2. Controlador para obtener los proyectos y 5. Controlador para obtener un proyecto por id.
+    public function get($_id)
+    {
+        if ($_id == NULL) {
+            //Retorno todo
+        } else {
+            //Busca por el id
+        }
+    }
 
-       } else {
+    //3. Controlador para actualizar un proyecto por id.
+    public function update($_nuevo)
+    {
+        //Recordar setear el id
+    }
 
-           // BUSCA POR EL ID
+    //4. Controlador para eliminar un proyecto por id.
+    public function delete($_id)
+    {
+        //Para eliminar
     }
 }
-    public function new($_nuevo){
-        //crear el objeto nuevo
-    }
-    
-    public function update($_nuevo){//no nos debemos olvidar de setear el id
-    }
-    
-    public function delete($_id){
-        //para eliminar
-    }
-}
-
-
-    
-

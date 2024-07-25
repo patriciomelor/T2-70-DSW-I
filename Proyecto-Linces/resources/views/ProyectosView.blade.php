@@ -1,3 +1,3 @@
 <div>
-    <H1>WENAAAAA</H1>
+    <h1>Vista de prueba</h1>
 </div>

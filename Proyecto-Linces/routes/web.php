@@ -17,7 +17,7 @@ Route::delete('/DeleteProyectos/{$_id}', function($_id) {
 });
 
 // 4. Actualizar proyecto por su id.
-Route::update('/UpdateProyectos/{$_id}', function($_id) {
+Route::put('/UpdateProyectos/{_id}', function($_id) {
     return view('UpdateProyectosView');
 });
 
