@@ -5,6 +5,20 @@
             "driver": "SQLite",
             "name": "PHPLaravel",
             "database": "${workspaceFolder:T2-70-DSW-I}/Proyecto-Linces/database/database.sqlite"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "24.144.68.149",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "BDLinces",
+            "username": "Linces_user",
+            "password": "G7h8I9j0K1l2",
+            "database": "prod_Linces"
         }
     ]
 }
