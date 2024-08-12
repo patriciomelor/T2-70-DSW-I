@@ -7,13 +7,21 @@
 </head>
 <body>
     <h1>Inicio de sesión</h1>
+
+    <!-- Errores -->
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <li>{{$error}}</li>
+        @endforeach
+    @endif
+
     <form action="{{Route('usuario.validar')}}" method="POST">
         @csrf
-        <input type="text" name="email" placeholder="Ingrese email"><br>
+        <input type="text" name="correo" placeholder="Ingrese correo"><br>
         <input type="password" name="password" placeholder="Ingrese contraseña"><br>
         <button type="submit">Ingresar</button>
     </form>
     <hr>
-    <a href="/create">Crear nuevo usuario</a>
+    <a href="{{Route('usuario.registrar')}}">Crear nuevo usuario</a>
 </body>
 </html>

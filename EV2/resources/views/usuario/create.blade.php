@@ -7,7 +7,16 @@
 </head>
 <body>
     <h1>Crear nuevo usuario</h1>
-    <form action="" method="POST">
+
+    <!-- Errores -->
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <li>{{$error}}</li>
+        @endforeach
+    @endif
+
+    <form action="{{Route('usuario.registrar')}}" method="POST">
+        @csrf
         <input type="text" name="nombre" placeholder="Ingrese su nombre y apellido"><br>
         <input type="text" name="email" placeholder="Ingrese su email"><br>
         <input type="password" name="password" placeholder="Ingrese la contraseña"><br>

@@ -9,4 +9,5 @@ Route::get('/', function () {
 
 Route::get('/login', [UserController::class, 'formularioLogin'])->name('usuario.login');
 Route::post('/login', [UserController::class, 'login'])->name('usuario.validar');
-Route::get('/create', [UserController::class, 'formularioCreate'])->name('usuario.create');
+Route::get('/users/register', [UserController::class, 'formularioNuevo'])->name('usuario.registrar');
+Route::post('/users/register', [UserController::class, 'registrar'])->name('usuario.registrar');
