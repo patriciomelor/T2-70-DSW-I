@@ -17,7 +17,7 @@
 
     <form action="{{Route('usuario.validar')}}" method="POST">
         @csrf
-        <input type="text" name="correo" placeholder="Ingrese correo"><br>
+        <input type="text" name="email" placeholder="Ingrese email"><br>
         <input type="password" name="password" placeholder="Ingrese contraseña"><br>
         <button type="submit">Ingresar</button>
     </form>
