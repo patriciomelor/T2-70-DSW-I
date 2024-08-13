@@ -19,6 +19,12 @@
             "username": "Linces_user",
             "password": "G7h8I9j0K1l2",
             "database": "prod_Linces"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Evaluación2",
+            "database": "${workspaceFolder:T2-70-DSW-I}/EV2/database/database.sqlite"
         }
     ],
     "sqltools.useNodeRuntime": true

@@ -34,7 +34,31 @@ class UserController extends Controller
             'email'=>'required|email',
             'password' => 'required'
         ], $mensajes);
+
+        $credenciales = $_request->only('email','password');
+
+        if(Auth::attempt($credenciales)){
+            //Verificar que el usuario esté activo
+            $user = Auth::user();
+            //Si es que el usuario está desactivado sale.
+            if (!$user->activo){
+                Auth::logout();
+                return redirect()->route('usuario.login')->withErrors(['email'=>'El usuario se encuentra desactivado']);
+            }
+            //Si el usuario está activo
+            $_request->session()->regenerate();
+            return redirect()->route('backoffice.dashboard');
+        }
+        return redirect()->back()->withErrors(['email'=>'El usuario o contraseña son incorrectos']);
     }
+
+    public function logout(Request $_request){
+        Auth::logout();
+        $_request->session()->invalidate();
+        $_request->session()->regenerateToken();
+        return redirect()->route('usuario.login');
+    }
+
 
     public function registrar(Request $_request){
         // Agrega este dd() para depurar la solicitud
