@@ -1,17 +1,20 @@
-<!DOCTYPE html>
+<!-- VISTA DE INICIO DE SESIÓN -->
+!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
 </head>
+
 <body>
     <h1>Inicio de sesión</h1>
 
     <!-- Errores -->
     @if ($errors->any())
         @foreach ($errors->all() as $error)
-        <li>{{$error}}</li>
+            <li>{{$error}}</li>
         @endforeach
     @endif
 
@@ -24,4 +27,5 @@
     <hr>
     <a href="{{Route('usuario.registrar')}}">Crear nuevo usuario</a>
 </body>
+
 </html>

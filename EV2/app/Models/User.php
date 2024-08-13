@@ -16,7 +16,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    //MODELO DE USUARIOS QUE USARÁ EL CONTROLADOR
     protected $fillable = [
+        'id',
         'nombre',
         'email',
         'password',

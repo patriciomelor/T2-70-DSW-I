@@ -10,20 +10,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    //FORMULARIO DE INICIO DE SESIÓN
     public function formularioLogin(){
         if(Auth::check()){
             return redirect()->route('backoffice.dashboard');
         }
         return view('usuario.login');
     }
-
-    public function formularioNuevo(){
-        if(Auth::check()){
-            return redirect()->route('backoffice.dashboard');
-        }
-        return view('usuario.create');
-    }
-
+    
+    //FUNCIÓN DE INICIO DE SESIÓN
     public function login(Request $_request){
         $mensajes = [
             'email.email' => 'El email no tiene un formato válido',
@@ -51,17 +47,25 @@ class UserController extends Controller
         }
         return redirect()->back()->withErrors(['email'=>'El usuario o contraseña son incorrectos']);
     }
-
+    
+    //FUNCIÓN DE CIERRE DE SESIÓN
     public function logout(Request $_request){
         Auth::logout();
         $_request->session()->invalidate();
         $_request->session()->regenerateToken();
         return redirect()->route('usuario.login');
     }
+    
+    //FORMULARIO DE CREACIÓN DE NUEVO USUARIO
+    public function formularioNuevo(){
+        if(Auth::check()){
+            return redirect()->route('backoffice.dashboard');
+        }
+        return view('usuario.create');
+    }
 
-
+    //FUNCIÓN DE REGISTRO DE USUARIO CON CIFRADO DE LA CONTRASEÑA
     public function registrar(Request $_request){
-        // Agrega este dd() para depurar la solicitud
 
         $mensajes = [
             'nombre.required' => 'El nombre es obligatorio.',
@@ -93,12 +97,16 @@ class UserController extends Controller
         }
 
         try {
+            //Creación del usuario
             User::create([
                 'nombre' => $datos['nombre'],
                 'email' => $datos['email'],
+                //Enmascaramiento de la contraseña
                 'password' => Hash::make($datos['password'])
             ]);
+            //Respuesta en caso de éxito
             return redirect()->route('usuario.login')->with('success', 'Usuario creado exitosamente.');
+        //Manejo de los errores
         } catch (Exception $e) {
             if($e->getCode()==23000){
                 return back()->withErrors(['message'=>'Error: El usuario ya existe.']);

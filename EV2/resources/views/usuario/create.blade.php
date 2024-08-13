@@ -1,17 +1,20 @@
+<!-- VISTA DE REGISTRO DE NUEVO USUARIO -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>create</title>
 </head>
+
 <body>
     <h1>Crear nuevo usuario</h1>
 
     <!-- Errores -->
     @if ($errors->any())
         @foreach ($errors->all() as $error)
-        <li>{{$error}}</li>
+            <li>{{$error}}</li>
         @endforeach
     @endif
 
@@ -27,4 +30,5 @@
     <hr>
     <a href="/login">Iniciar sesión</a>
 </body>
+
 </html>
