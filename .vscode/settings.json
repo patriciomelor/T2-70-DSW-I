@@ -20,5 +20,6 @@
             "password": "G7h8I9j0K1l2",
             "database": "prod_Linces"
         }
-    ]
+    ],
+    "sqltools.useNodeRuntime": true
 }

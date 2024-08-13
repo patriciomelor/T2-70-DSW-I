@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-
 class UserController extends Controller
 {
     public function formularioLogin(){
@@ -24,6 +23,7 @@ class UserController extends Controller
         }
         return view('usuario.create');
     }
+
     public function login(Request $_request){
         $mensajes = [
             'email.email' => 'El email no tiene un formato válido',
@@ -37,10 +37,12 @@ class UserController extends Controller
     }
 
     public function registrar(Request $_request){
+        // Agrega este dd() para depurar la solicitud
+
         $mensajes = [
             'nombre.required' => 'El nombre es obligatorio.',
             'email.required' => 'El email es obligatorio.',
-            'email.email' => 'El email no tieen un formato válido.',
+            'email.email' => 'El email no tiene un formato válido.',
             'password.required' => 'La contraseña es obligatoria.',
             'rePassword.required' => 'Repetir contraseña es obligatorio.',
             'dayCode.required' => 'El código del día es obligatorio.',
@@ -52,7 +54,7 @@ class UserController extends Controller
             'rePassword' => 'required',
             'dayCode' => 'required',
         ], $mensajes);
-        
+                
         $datos = $_request->only('nombre', 'email', 'password', 'rePassword', 'dayCode');
 
         // Verificación de contraseña
@@ -61,8 +63,9 @@ class UserController extends Controller
         }
 
         // Verificación del código del día
-        if($datos['dayCode'] !=date("d")){
-            return back()->withErrors(['message'=>'El código del día no es válido.']);
+        date_default_timezone_set('UTC');
+        if($datos['dayCode'] != date("d")){
+            return back()->withErrors(['message' => 'El código del día no es válido.']);
         }
 
         try {
@@ -73,7 +76,10 @@ class UserController extends Controller
             ]);
             return redirect()->route('usuario.login')->with('success', 'Usuario creado exitosamente.');
         } catch (Exception $e) {
-            return back()->withErrors(['message'=>'Error: '. $e->getMessage()]);
+            if($e->getCode()==23000){
+                return back()->withErrors(['message'=>'Error: El usuario ya existe.']);
+            }
+            return back()->withErrors(['message' => 'Error: '. $e->getMessage()]);
         }        
     }
 }
