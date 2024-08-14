@@ -3,25 +3,33 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('landing.index');
-})->name('raiz');
+//RUTAS PÚBLICAS
 
-//RUTAS INICIO DE SESIÓN - LOGIN
-Route::get('/login', [UserController::class, 'formularioLogin'])->name('usuario.login');
-Route::post('/login', [UserController::class, 'login'])->name('usuario.validar');
+    //RUTA  DE LA PÁGINA DE INICIO
+    Route::get('/', function () {
+        return view('landing.index');
+    })->name('raiz');
 
-//RUTAS LOGOUT
-Route::post('/logout', [UserController::class, 'logout'])->name('usuario.logout');
+    //RUTAS INICIO DE SESIÓN - LOGIN
+    Route::get('/login', [UserController::class, 'formularioLogin'])->name('usuario.login');
+    Route::post('/login', [UserController::class, 'login'])->name('usuario.validar');
 
-//RUTAS PARA REGISTRO DE USUARIO
-Route::get('/users/register', [UserController::class, 'formularioNuevo'])->name('usuario.registrar');
-Route::post('/users/register', [UserController::class, 'registrar'])->name('usuario.registrar');
+    //RUTAS LOGOUT
+    Route::post('/logout', [UserController::class, 'logout'])->name('usuario.logout');
 
-Route::get('/backoffice', function(){
-    $user = Auth::user();
-    if($user == NULL){
-        return redirect()->route('usuario.login')->withErrors(['message'=>'No existe una sesión activa']);
-    }
-    return view('backoffice.dashboard',['user'=>$user]);
-})->name('backoffice.dashboard');
+    //RUTAS PARA REGISTRO DE USUARIO
+    Route::get('/users/register', [UserController::class, 'formularioNuevo'])->name('usuario.registrar');
+    Route::post('/users/register', [UserController::class, 'registrar'])->name('usuario.registrar');
+
+
+//RUTA PRIVADA
+//MIDDLEWARE
+Route::middleware('jwt.auth')->group(function () {
+    //RUTA DEL BACKOFFICE
+    Route::middleware('jwt.auth')->group(function () {
+        Route::get('/backoffice', function () {
+            return view('backoffice.dashboard', ['user' => Auth::user()]);
+        })->name('backoffice.dashboard');
+    });    
+});
+
