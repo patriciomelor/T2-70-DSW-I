@@ -1,5 +1,5 @@
 <!-- VISTA DE INICIO DE SESIÓN -->
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>

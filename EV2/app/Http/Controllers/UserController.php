@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
@@ -20,33 +22,39 @@ class UserController extends Controller
     }
     
     //FUNCIÓN DE INICIO DE SESIÓN
-    public function login(Request $_request){
-        $mensajes = [
-            'email.email' => 'El email no tiene un formato válido',
-            'email.required' => 'El email es obligatorio',
-            'password.required' => 'La contraseña es obligatoria'
-        ];
-        $_request->validate([
-            'email'=>'required|email',
-            'password' => 'required'
-        ], $mensajes);
+    public function login(Request $request)
+{
+    $mensajes = [
+        'email.email' => 'El email no tiene un formato válido',
+        'email.required' => 'El email es obligatorio',
+        'password.required' => 'La contraseña es obligatoria'
+    ];
 
-        $credenciales = $_request->only('email','password');
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ], $mensajes);
 
-        if(Auth::attempt($credenciales)){
-            //Verificar que el usuario esté activo
-            $user = Auth::user();
-            //Si es que el usuario está desactivado sale.
-            if (!$user->activo){
-                Auth::logout();
-                return redirect()->route('usuario.login')->withErrors(['email'=>'El usuario se encuentra desactivado']);
-            }
-            //Si el usuario está activo
-            $_request->session()->regenerate();
-            return redirect()->route('backoffice.dashboard');
+    $credentials = $request->only('email', 'password');
+
+    try {
+        // Intenta autenticar al usuario y generar el token JWT
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return redirect()->back()->withErrors(['email'=>'El usuario o contraseña son incorrectos']);
+    } catch (JWTException $e) {
+        return response()->json(['error' => 'Could not create token'], 500);
     }
+
+    // Verifica si el usuario está activo
+    $user = Auth::user();
+    if (!$user->activo) {
+        return response()->json(['error' => 'El usuario se encuentra desactivado'], 403);
+    }
+
+    // Devuelve el token JWT en la respuesta
+    return response()->json(compact('token'));
+}
     
     //FUNCIÓN DE CIERRE DE SESIÓN
     public function logout(Request $_request){
