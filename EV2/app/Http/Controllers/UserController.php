@@ -21,48 +21,57 @@ class UserController extends Controller
         return view('usuario.login');
     }
     
-    //FUNCIÓN DE INICIO DE SESIÓN
     public function login(Request $request)
-{
-    $mensajes = [
-        'email.email' => 'El email no tiene un formato válido',
-        'email.required' => 'El email es obligatorio',
-        'password.required' => 'La contraseña es obligatoria'
-    ];
+    {
+        $messages = [
+            'email.email' => 'El email no tiene un formato válido',
+            'email.required' => 'El email es obligatorio',
+            'password.required' => 'La contraseña es obligatoria'
+        ];
+    
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ], $messages);
+    
+        $credentials = $request->only('email', 'password');
+    
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+    
+            // Verifica si el usuario está activo antes de devolver el token
+            $user = JWTAuth::setToken($token)->toUser();
+            if (!$user->activo) {
+                return response()->json(['error' => 'El usuario se encuentra desactivado'], 403);
+            }
+    
+            // Devuelve el token JWT en la respuesta si el usuario está activo
+            return response()->json(compact('token'));
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create token'], 500);
 
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required'
-    ], $mensajes);
-
-    $credentials = $request->only('email', 'password');
-
-    try {
-        // Intenta autenticar al usuario y generar el token JWT
-        if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
         }
-    } catch (JWTException $e) {
-        return response()->json(['error' => 'Could not create token'], 500);
+        $ttl = config('jwt.ttl');
+        dd($ttl); // Para verificar si el valor es el esperado
     }
-
-    // Verifica si el usuario está activo
-    $user = Auth::user();
-    if (!$user->activo) {
-        return response()->json(['error' => 'El usuario se encuentra desactivado'], 403);
-    }
-
-    // Devuelve el token JWT en la respuesta
-    return response()->json(compact('token'));
-}
+    
+    
     
     //FUNCIÓN DE CIERRE DE SESIÓN
-    public function logout(Request $_request){
-        Auth::logout();
-        $_request->session()->invalidate();
-        $_request->session()->regenerateToken();
-        return redirect()->route('usuario.login');
+    public function logout(Request $request)
+    {
+        try {
+            // Invalida el token JWT
+            JWTAuth::invalidate(JWTAuth::getToken());
+    
+            return response()->json(['message' => 'Logout exitoso'], 200);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Error al cerrar sesión, inténtelo nuevamente'], 500);
+        }
     }
+    
     
     //FORMULARIO DE CREACIÓN DE NUEVO USUARIO
     public function formularioNuevo(){
