@@ -26,7 +26,6 @@ class User extends Authenticatable
         'activo',
     ];
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
