@@ -22,14 +22,12 @@ use Illuminate\Support\Facades\Route;
     Route::post('/users/register', [UserController::class, 'registrar'])->name('usuario.registrar');
 
 
-//RUTA PRIVADA
-//MIDDLEWARE
+// RUTA PRIVADA
+// MIDDLEWARE
 Route::middleware('jwt.auth')->group(function () {
-    //RUTA DEL BACKOFFICE
-    Route::middleware('jwt.auth')->group(function () {
-        Route::get('/backoffice', function () {
-            return view('backoffice.dashboard', ['user' => Auth::user()]);
-        })->name('backoffice.dashboard');
-    });    
+    Route::get('/backoffice', function () {
+        return view('backoffice.dashboard', ['user' => Auth::user()]);
+    })->name('backoffice.dashboard');
 });
+
 

@@ -12,15 +12,15 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
-
-    //FORMULARIO DE INICIO DE SESIÓN
-    public function formularioLogin(){
-        if(Auth::check()){
+    // FORMULARIO DE INICIO DE SESIÓN
+    public function formularioLogin()
+    {
+        if (Auth::check()) {
             return redirect()->route('backoffice.dashboard');
         }
         return view('usuario.login');
     }
-    
+
     public function login(Request $request)
     {
         $messages = [
@@ -47,88 +47,98 @@ class UserController extends Controller
                 return response()->json(['error' => 'El usuario se encuentra desactivado'], 403);
             }
     
-            // Devuelve el token JWT en la respuesta si el usuario está activo
-            return response()->json(compact('token'));
+            // Obtener el tiempo de vida del token desde la configuración
+            $ttl = config('jwt.ttl');
+    
+            // Asegurarse de que $ttl sea un número entero
+            if (!is_numeric($ttl)) {
+                throw new \Exception('El valor de TTL no es un número válido.');
+            }
+    
+            $ttl = (int) $ttl;
+    
+            // Calcular la fecha de expiración del token usando funciones nativas de PHP
+            $expiration = time() + ($ttl * 60);
+    
+            // Redirigir al usuario a backoffice/dashboard.blade.php
+            return redirect()->route('backoffice.dashboard')->with([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => date('Y-m-d H:i:s', $expiration)
+            ]);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
-
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        $ttl = config('jwt.ttl');
-        dd($ttl); // Para verificar si el valor es el esperado
     }
     
     
-    
-    //FUNCIÓN DE CIERRE DE SESIÓN
+
+    // FUNCIÓN DE CIERRE DE SESIÓN
     public function logout(Request $request)
     {
         try {
             // Invalida el token JWT
             JWTAuth::invalidate(JWTAuth::getToken());
-    
+
             return response()->json(['message' => 'Logout exitoso'], 200);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Error al cerrar sesión, inténtelo nuevamente'], 500);
         }
     }
-    
-    
-    //FORMULARIO DE CREACIÓN DE NUEVO USUARIO
-    public function formularioNuevo(){
-        if(Auth::check()){
+
+    // FORMULARIO DE CREACIÓN DE NUEVO USUARIO
+    public function formularioNuevo()
+    {
+        if (Auth::check()) {
             return redirect()->route('backoffice.dashboard');
         }
         return view('usuario.create');
     }
 
-    //FUNCIÓN DE REGISTRO DE USUARIO CON CIFRADO DE LA CONTRASEÑA
-    public function registrar(Request $_request){
-
+    // FUNCIÓN DE REGISTRO DE USUARIO CON CIFRADO DE LA CONTRASEÑA
+    public function registrar(Request $_request)
+    {
         $mensajes = [
             'nombre.required' => 'El nombre es obligatorio.',
             'email.required' => 'El email es obligatorio.',
             'email.email' => 'El email no tiene un formato válido.',
             'password.required' => 'La contraseña es obligatoria.',
             'rePassword.required' => 'Repetir contraseña es obligatorio.',
-            'dayCode.required' => 'El código del día es obligatorio.',
         ];
         $_request->validate([
             'nombre' => 'required|string|max:50',
             'email' => 'required|email',
             'password' => 'required',
             'rePassword' => 'required',
-            'dayCode' => 'required',
+            
         ], $mensajes);
-                
-        $datos = $_request->only('nombre', 'email', 'password', 'rePassword', 'dayCode');
+
+        $datos = $_request->only('nombre', 'email', 'password', 'rePassword');
 
         // Verificación de contraseña
-        if($datos['password'] != $datos['rePassword']){
+        if ($datos['password'] != $datos['rePassword']) {
             return back()->withErrors(['message' => 'Las contraseñas ingresadas no coinciden']);
         }
 
-        // Verificación del código del día
-        date_default_timezone_set('UTC');
-        if($datos['dayCode'] != date("d")){
-            return back()->withErrors(['message' => 'El código del día no es válido.']);
-        }
 
         try {
-            //Creación del usuario
+            // Creación del usuario
             User::create([
                 'nombre' => $datos['nombre'],
                 'email' => $datos['email'],
-                //Enmascaramiento de la contraseña
-                'password' => Hash::make($datos['password'])
+                // Enmascaramiento de la contraseña
+                'password' => Hash::make($datos['password']),
+                'activo' => 1 // Establecer el campo activo en 1
             ]);
-            //Respuesta en caso de éxito
+            // Respuesta en caso de éxito
             return redirect()->route('usuario.login')->with('success', 'Usuario creado exitosamente.');
-        //Manejo de los errores
         } catch (Exception $e) {
-            if($e->getCode()==23000){
-                return back()->withErrors(['message'=>'Error: El usuario ya existe.']);
+            if ($e->getCode() == 23000) {
+                return back()->withErrors(['message' => 'Error: El usuario ya existe.']);
             }
-            return back()->withErrors(['message' => 'Error: '. $e->getMessage()]);
-        }        
+            return back()->withErrors(['message' => 'Error: ' . $e->getMessage()]);
+        }
     }
 }
