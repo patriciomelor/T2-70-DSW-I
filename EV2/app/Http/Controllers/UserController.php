@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -29,50 +30,43 @@ class UserController extends Controller
             'password.required' => 'La contraseña es obligatoria'
         ];
     
-        $request->validate([
+        // Validación de la solicitud
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ], $messages);
     
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
         $credentials = $request->only('email', 'password');
-    
+
         try {
-            if (!$token = JWTAuth::attempt($credentials)) {
+            // Intentar autenticar y generar un token
+            $token = JWTAuth::attempt($credentials);
+            dd($token); // Depura el token
+    
+            if (!$token) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
     
-            // Verifica si el usuario está activo antes de devolver el token
-            $user = JWTAuth::setToken($token)->toUser();
-            if (!$user->activo) {
-                return response()->json(['error' => 'El usuario se encuentra desactivado'], 403);
+            // Redirigir al dashboard si el request no es JSON
+            if (!$request->wantsJson()) {
+                // Almacenar el token en la sesión para usarlo en la vista
+                session(['token' => $token]);
+    
+                return redirect()->route('backoffice.dashboard');
             }
     
-            // Obtener el tiempo de vida del token desde la configuración
-            $ttl = config('jwt.ttl');
+            return response()->json(compact('token'));
     
-            // Asegurarse de que $ttl sea un número entero
-            if (!is_numeric($ttl)) {
-                throw new \Exception('El valor de TTL no es un número válido.');
-            }
-    
-            $ttl = (int) $ttl;
-    
-            // Calcular la fecha de expiración del token usando funciones nativas de PHP
-            $expiration = time() + ($ttl * 60);
-    
-            // Redirigir al usuario a backoffice/dashboard.blade.php
-            return redirect()->route('backoffice.dashboard')->with([
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => date('Y-m-d H:i:s', $expiration)
-            ]);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
         }
+        
+        
+        
     }
-    
     
 
     // FUNCIÓN DE CIERRE DE SESIÓN
@@ -112,7 +106,6 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'rePassword' => 'required',
-            
         ], $mensajes);
 
         $datos = $_request->only('nombre', 'email', 'password', 'rePassword');
@@ -121,7 +114,6 @@ class UserController extends Controller
         if ($datos['password'] != $datos['rePassword']) {
             return back()->withErrors(['message' => 'Las contraseñas ingresadas no coinciden']);
         }
-
 
         try {
             // Creación del usuario
@@ -132,6 +124,7 @@ class UserController extends Controller
                 'password' => Hash::make($datos['password']),
                 'activo' => 1 // Establecer el campo activo en 1
             ]);
+
             // Respuesta en caso de éxito
             return redirect()->route('usuario.login')->with('success', 'Usuario creado exitosamente.');
         } catch (Exception $e) {
