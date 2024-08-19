@@ -3,33 +3,20 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-//RUTAS PÚBLICAS
+Route::get('/', function () {
+    return view('landing.index');
+})->name('raiz');
 
-    //RUTA  DE LA PÁGINA DE INICIO
-    Route::get('/', function () {
-        return view('landing.index');
-    })->name('raiz');
+Route::get('/login', [UserController::class, 'formularioLogin'])->name('usuario.login');
+Route::post('/login', [UserController::class, 'login'])->name('usuario.validar');
 
-    //RUTAS INICIO DE SESIÓN - LOGIN
-    Route::get('/login', [UserController::class, 'formularioLogin'])->name('usuario.login');
-    Route::post('/login', [UserController::class, 'login'])->name('usuario.validar');
+Route::post('/logout', [UserController::class, 'logout'])->name('usuario.logout');
 
-    //RUTAS LOGOUT
-    Route::post('/logout', [UserController::class, 'logout'])->name('usuario.logout');
+Route::get('/users/register', [UserController::class, 'formularioNuevo'])->name('usuario.registrar');
+Route::post('/users/register', [UserController::class, 'registrar'])->name('usuario.registrar.post');
 
-    //RUTAS PARA REGISTRO DE USUARIO
-    Route::get('/users/register', [UserController::class, 'formularioNuevo'])->name('usuario.registrar');
-    Route::post('/users/register', [UserController::class, 'registrar'])->name('usuario.registrar');
-
-
-//RUTA PRIVADA
-//MIDDLEWARE
 Route::middleware('jwt.auth')->group(function () {
-    //RUTA DEL BACKOFFICE
-    Route::middleware('jwt.auth')->group(function () {
-        Route::get('/backoffice', function () {
-            return view('backoffice.dashboard', ['user' => Auth::user()]);
-        })->name('backoffice.dashboard');
-    });    
+    Route::get('/backoffice', function () {
+        return view('backoffice.dashboard');
+    })->name('backoffice.dashboard');
 });
-
