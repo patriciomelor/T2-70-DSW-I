@@ -1,4 +1,4 @@
-@extends('layouts.lock')
+@extends('layouts.dash')
 
 @section('content')
   <div class="lockscreen-logo">

@@ -79,7 +79,6 @@
                  <ion-icon name="person-circle-outline"style="color:grey!important;font-size: 32px;"></ion-icon>
              </div>
             <div class="info">
-            <a href="#" class="d-block">{{ Auth::user()->name }}</a>
             </div>
             <div class="info ml-4">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -118,7 +117,6 @@
        
           </li>
           <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Usuarios
@@ -129,7 +127,6 @@
           <li class="nav-header">SITIO
           </li>
           <li class="nav-item">
-            <a href="{{ route('articles.index') }}" class="nav-link">
               <i class="nav-icon far fa-pencil"></i>
               <p>
                 Publicaciones
