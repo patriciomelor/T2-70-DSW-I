@@ -17,7 +17,31 @@
     <link href="{{ asset('css/adminlte.css') }}" rel="stylesheet">
     <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
+
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <!-- FontAwesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- FontAwesome Icon Picker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/css/fontawesome-iconpicker.min.css"
+        rel="stylesheet">
+
+    <!--Select2-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js">
+    </script>
+
 
   </head>
 <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -69,17 +93,22 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <span class="brand-text text-center font-weight-light"><b>TERRA<b>SOL</span>
+      <span class="brand-text text-center font-weight-light"><b>EVA<b>03</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="align-items: center;">
              <div class="image">
+              
                  <ion-icon name="person-circle-outline"style="color:grey!important;font-size: 32px;"></ion-icon>
              </div>
             <div class="info">
-            <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+              @if(auth()->user())
+              <a href="#" class="d-block">{{ auth()->user()->nombre }}!</a>
+              @else
+                  <a href="{{ route('login') }}" class="d-block">Iniciar sesión</a>
+              @endif
             </div>
             <div class="info ml-4">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -91,17 +120,7 @@
             </div>
       </div>
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div><div class="sidebar-search-results"><div class="list-group"><a href="#" class="list-group-item"><div class="search-title"><strong class="text-light"></strong>N<strong class="text-light"></strong>o<strong class="text-light"></strong> <strong class="text-light"></strong>e<strong class="text-light"></strong>l<strong class="text-light"></strong>e<strong class="text-light"></strong>m<strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong> <strong class="text-light"></strong>f<strong class="text-light"></strong>o<strong class="text-light"></strong>u<strong class="text-light"></strong>n<strong class="text-light"></strong>d<strong class="text-light"></strong>!<strong class="text-light"></strong></div><div class="search-path"></div></a></div></div>
-      </div>
+
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -118,7 +137,7 @@
        
           </li>
           <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Usuarios
@@ -126,25 +145,16 @@
             </a>
        
           </li>
-          <li class="nav-header">SITIO
-          </li>
+
           <li class="nav-item">
-            <a href="{{ route('articles.index') }}" class="nav-link">
-              <i class="nav-icon far fa-pencil"></i>
+            <a href="{{ route('proyects.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-pencil"></i>
               <p>
-                Publicaciones
-                <span class="badge badge-info right">2</span>
+                Proyectos
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="../gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Gallery
-              </p>
-            </a>
-          </li>
+  
      
         </ul>
       </nav>
@@ -181,23 +191,20 @@
 
 </script>
 
-   <!-- Primero jQuery -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    
-    <!-- Luego Bootstrap JS Bundle -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Luego AdminLTE -->
-    <script src="{{ asset('js/adminlte.min.js') }}"></script>
-
-    <!-- Finalmente DataTables -->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-    <!-- Ionicons -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-
+<script src="{{ asset('js/adminlte.min.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Asegúrate de incluir jQuery antes de Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRuDch_iRINkMpRTc-m5EFIhpZ8CdeqBs&libraries=places">
+</script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 @yield('scripts')
 </body>
 </html>

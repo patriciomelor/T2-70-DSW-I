@@ -12,15 +12,18 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'nombre', 'email', 'password',
-    ];
+    protected $fillable = ['nombre', 'email', 'password'];
 
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,13 +46,6 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
 
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+
 }

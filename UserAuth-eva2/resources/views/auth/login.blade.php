@@ -6,10 +6,10 @@
 </div>
 <div class="card-body">
 <p class="login-box-msg">Complete los datos para ingresar</p>
-    <form class="form-group"action="{{ route('login') }}" method="POST">
-        @csrf
+        <form class="form-group" method="POST" action="{{ route('login') }}">
+    @csrf
         <div class="input-group mb-3">
-            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" required autofocus placeholder="{{ __('Email Address') }}">
+            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"  id="email" required autofocus placeholder="{{ __('Email Address') }}">
                  <div class="input-group-append">
                      <div class="input-group-text">
                         <span class="fas fa-envelope"></span>
@@ -52,7 +52,7 @@
 
                     <div class="mt-3 text-center">
                         <p class="mb-0">
-                            <a href="{{ route('register') }}" class="text-center">{{ __('Registrarme') }}</a>
+                            <a href="{{ route('register.form') }}" class="text-center">{{ __('Registrarme') }}</a>
                         </p>
                     </div>
                 </div>

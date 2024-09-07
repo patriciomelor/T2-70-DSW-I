@@ -6,57 +6,60 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator; // <-- Añadir esta línea
 
 class AuthController extends Controller
 {
-    // Mostrar el formulario de registro
-    public function showRegisterForm()
+    public function showRegistrationForm()
     {
         return view('auth.register');
     }
 
-    // Registrar un nuevo usuario
+
     public function register(Request $request)
     {
-        $validatedData = $request->validate([
+    
+        $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
-
-        $user = User::create([
-            'nombre' => $validatedData['nombre'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        User::create([
+            'nombre' => $request->input('nombre'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
         ]);
         
-
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'Usuario registrado con éxito.');
     }
-
+    
+    
     // Mostrar el formulario de login
     public function showLoginForm()
     {
         return view('auth.login');
     }
-
-    // Autenticar al usuario
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard');
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return back()->with('error', 'Credenciales incorrectas');
         }
 
-        return back()->withErrors([
-            'email' => 'Estas credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email');
+        return redirect()->intended('dashboard');
     }
 
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/login');
+    }
     // Mostrar el dashboard
     public function showDashboard()
     {

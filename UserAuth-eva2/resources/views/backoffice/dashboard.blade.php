@@ -1,11 +1,11 @@
-@extends('layouts.lock')
+@extends('layouts.dash')
 
 @section('content')
   <div class="lockscreen-logo">
     <a href="../../index2.html"><b>Admin</b>LTE</a>
   </div>
   <!-- User name -->
-  <div class="lockscreen-name">{{ auth()->user()->nombre }}!</div>
+  <div class="lockscreen-name"></div>
 
   <!-- START LOCK SCREEN ITEM -->
   <div class="lockscreen-item">
@@ -40,45 +40,4 @@
     para IPSS
   </div>
 
-  <script>
-    function validatePassword(event) {
-      event.preventDefault();
-      const passwordInput = document.getElementById('password').value;
-
-      if (passwordInput === '') {
-        alert('Por favor, ingresa una contraseña');
-        return;
-      }
-
-      // Enviar solicitud AJAX al servidor para validar la contraseña
-      fetch('{{ route("validate.password") }}', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-          password: passwordInput
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.valid) {
-          alert('Contraseña validada, sesión correcta.');
-          // Redirigir al dashboard o realizar otra acción
-        } else {
-          alert('Contraseña incorrecta. Inténtalo de nuevo.');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Ocurrió un error al validar la contraseña. Inténtalo de nuevo más tarde.');
-      });
-    }
-
-    document.getElementById('change-session').addEventListener('click', function(event) {
-      event.preventDefault();
-      window.location.href = '{{ route("login") }}'; // Redirige al login
-    });
-  </script>
 @endsection
