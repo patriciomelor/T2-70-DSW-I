@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\ProjectController;
 
 Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
@@ -28,3 +29,5 @@ Route::post('/validate-password', function(Request $request) {
         return response()->json(['valid' => false]);
     }
 })->name('validate.password');
+
+Route::resource('proyects', ProjectController::class);

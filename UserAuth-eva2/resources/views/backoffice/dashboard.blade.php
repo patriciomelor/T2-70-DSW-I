@@ -5,7 +5,7 @@
     <a href="../../index2.html"><b>Admin</b>LTE</a>
   </div>
   <!-- User name -->
-  <div class="lockscreen-name">{{ auth()->user()->nombre }}!</div>
+  <div class="lockscreen-name"></div>
 
   <!-- START LOCK SCREEN ITEM -->
   <div class="lockscreen-item">
