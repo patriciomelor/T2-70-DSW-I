@@ -93,7 +93,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <span class="brand-text text-center font-weight-light"><b>TERRA<b>SOL</span>
+      <span class="brand-text text-center font-weight-light"><b>EVA<b>03</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -104,8 +104,11 @@
                  <ion-icon name="person-circle-outline"style="color:grey!important;font-size: 32px;"></ion-icon>
              </div>
             <div class="info">
-          <a href="#" class="d-block">{{ auth()->user()->nombre }}!</a>
-
+              @if(auth()->user())
+              <a href="#" class="d-block">{{ auth()->user()->nombre }}!</a>
+              @else
+                  <a href="{{ route('login') }}" class="d-block">Iniciar sesión</a>
+              @endif
             </div>
             <div class="info ml-4">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -46,25 +46,26 @@ class ProjectController extends Controller
 
                 
     
-        // Actualizar un proyecto
         public function update(Request $request, Project $project)
         {
+            dd($request->all());  // Elimina o comenta esta línea después de la verificación
+        
             $request->validate([
                 'name' => 'required',
                 'creation_date' => 'required|date',
                 'active' => 'boolean',
-
             ]);
-    
+        
             $project->update([
                 'name' => $request->name,
                 'creation_date' => $request->creation_date,
-                'user_id' => auth()->id(), // Actualiza con el ID del usuario autenticado
+                'user_id' => auth()->id(),
                 'active' => $request->has('active'),
             ]);
-    
+        
             return redirect()->route('proyects.index')->with('success', 'Proyecto actualizado exitosamente.');
         }
+        
     
         // Eliminar un proyecto
         public function destroy(Project $project)
