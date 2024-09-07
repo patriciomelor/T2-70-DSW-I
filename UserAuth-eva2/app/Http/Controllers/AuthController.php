@@ -6,7 +6,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
 class AuthController extends Controller
 {
     // Mostrar el formulario de registro
@@ -24,16 +23,18 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
+        // Crea el usuario
         $user = User::create([
             'nombre' => $validatedData['nombre'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
-        
 
-        Auth::login($user);
+        // Genera el token JWT
+        $token = JWTAuth::fromUser($user);
 
-        return redirect()->route('dashboard');
+        // Opcional: Si quieres redirigir al dashboard o devolver el token
+        return response()->json(['token' => $token]);
     }
 
     // Mostrar el formulario de login
@@ -47,14 +48,11 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard');
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
 
-        return back()->withErrors([
-            'email' => 'Estas credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email');
+        return response()->json(['token' => $token]);
     }
 
     // Mostrar el dashboard
