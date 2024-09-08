@@ -1,7 +1,9 @@
 @extends('layouts.dash')
 
 @section('content')
-    <form action="{{ isset($project) ? route('projects.update', $project->id) : route('projects.store') }}" method="POST">
+    <form action="{{ isset($project) ? route('proyects.update', $project->id) : route('proyects.store') }}" method="POST">
+
+    <!-- <form action="{{ isset($project) ? route('projects.update', $project->id) : route('projects.store') }}" method="POST"> -->
         @csrf
         @if(isset($project))
             @method('PUT')

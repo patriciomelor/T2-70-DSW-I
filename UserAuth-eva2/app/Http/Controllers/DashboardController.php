@@ -7,6 +7,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        return view('backoffice.dashboard');
     }
 }

@@ -24,3 +24,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+
+
+
+Route::get('/proyects', [ProjectController::class, 'index'])->name('proyects.index');
+Route::delete('/proyects/{project}', [ProjectController::class, 'destroy'])->name('proyects.destroy');

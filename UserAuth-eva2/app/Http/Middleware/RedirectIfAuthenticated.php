@@ -12,7 +12,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             // Asumiendo que el dashboard es donde quieres enviar a usuarios autenticados
-            return redirect('dashboard');
+            return redirect('backoffice.dashboard');
         }
 
         return $next($request);

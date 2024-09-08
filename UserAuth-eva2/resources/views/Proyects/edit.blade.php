@@ -7,7 +7,8 @@
     <p>No se encontró el proyecto.</p>
 @endif
 
-<form action="{{ route('proyects.update', ['proyect' => $project->id]) }}" method="POST">
+<!-- <form action="{{ route('proyects.update', ['proyect' => $project->id]) }}" method="POST"> -->
+<form action="{{ route('proyects.update', $project->id) }}" method="POST">
 
 
 @csrf

@@ -35,7 +35,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
         
-        return redirect()->route('dashboard')->with('success', 'Usuario registrado con éxito.');
+        return redirect()->route('backoffice.dashboard')->with('success', 'Usuario registrado con éxito.');
     }
     
     
@@ -52,7 +52,7 @@ class AuthController extends Controller
             return back()->with('error', 'Credenciales incorrectas');
         }
 
-        return redirect()->intended('dashboard');
+        return redirect()->intended('backoffice.dashboard');
     }
 
     public function logout()
