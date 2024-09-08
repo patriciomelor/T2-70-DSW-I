@@ -30,3 +30,7 @@ Route::middleware('auth:api')->group(function () {
 
 Route::get('/proyects', [ProjectController::class, 'index'])->name('proyects.index');
 Route::delete('/proyects/{project}', [ProjectController::class, 'destroy'])->name('proyects.destroy');
+
+
+
+Route::get('/dashboard', [App\Http\Controllers\AuthController::class, 'showDashboard'])->name('dashboard');
