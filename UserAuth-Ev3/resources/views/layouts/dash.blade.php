@@ -48,18 +48,7 @@
 <div class="wrapper">
    <!-- Navbar -->
    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
-    </ul>
+
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -99,25 +88,7 @@
     <div class="sidebar">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="align-items: center;">
-             <div class="image">
-              
-                 <ion-icon name="person-circle-outline"style="color:grey!important;font-size: 32px;"></ion-icon>
-             </div>
-            <div class="info">
-              @if(auth()->user())
-              <a href="#" class="d-block">{{ auth()->user()->nombre }}!</a>
-              @else
-                  <a href="{{ route('login') }}" class="d-block">Iniciar sesión</a>
-              @endif
-            </div>
-            <div class="info ml-4">
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-                <a href="#" onclick="document.getElementById('logout-form').submit();">
-                    <ion-icon name="log-out-outline" style="color:red!important;font-size: 32px;"></ion-icon>
-                </a>
-            </div>
+  
       </div>
 
 
@@ -128,16 +99,11 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="{{url ('/home') }}" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Escritorio
-              </p>
-            </a>
+      
        
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('users.index') }}" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Usuarios

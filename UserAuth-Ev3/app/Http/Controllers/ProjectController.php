@@ -48,21 +48,20 @@ class ProjectController extends Controller
     
         public function update(Request $request, Project $project)
         {
-            dd($request->all());  // Elimina o comenta esta línea después de la verificación
-        
             $request->validate([
-                'name' => 'required',
+                'name' => 'required|string|max:255',
                 'creation_date' => 'required|date',
-                'active' => 'boolean',
+                // Puedes agregar validación para 'active' si es necesario
             ]);
         
+            // Actualizar el proyecto con nuevos valores
             $project->update([
                 'name' => $request->name,
                 'creation_date' => $request->creation_date,
-                'user_id' => auth()->id(),
-                'active' => $request->has('active'),
+                'active' => $request->has('active'),  // Esto devolverá true si 'active' está marcado, false si no
             ]);
         
+            // Redireccionar al usuario con un mensaje de éxito
             return redirect()->route('proyects.index')->with('success', 'Proyecto actualizado exitosamente.');
         }
         
